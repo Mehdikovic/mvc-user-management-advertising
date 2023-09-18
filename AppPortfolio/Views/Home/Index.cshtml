@@ -1,0 +1,160 @@
+﻿﻿@model AppPortfolio.Models.DataModels.ViewModels.AIOViewModel
+
+@{
+    ViewBag.Title = "اخبار و نمونه سوالات استخدامی، نمونه سوالات EPT";
+}
+@section metaTags{
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، دانلود نمونه سوالات و نرم افزار استخدامی، مشاهده آخرین اخبار">
+    <meta name="keywords" content="خبار استخدامی،دانلود نرم افزار های استخدامی،سنجش استخدامی،استخدام،نمونه سوالات استخدامی،،EPT،آخرین اخبار استخدامی">
+    <link rel="canonical" href="/" />
+}
+
+<div class="tp-banner-container fullwidthbanner">
+    <div id="rev-slider" class="tp-banner">
+        <ul>
+            @foreach (var item in Model.Apps) {
+            <!-- SLIDE ONE -->
+                <li data-transition="fade" data-slotamount="5" data-masterspeed="700" data-title="winter">
+                    <!-- MAIN IMAGE -->
+
+
+                    <img src="@item.Imagepath" class="img-slider-size" alt="@item.Name" title="@item.Name" data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
+                    <div class="tp-caption tp-big-heading tp-big-heading-bold tp-white sfb"
+                         data-x="110"
+                         data-y="310"
+                         data-speed="500"
+                         data-start="1000"
+                         data-easing="Back.easeOut"
+                         data-endspeed="500"
+                         style="z-index: 3; white-space: nowrap;">
+                        <a href="@item.Filepath" title="@item.Name" alt="@item.Name" class="quote-btn btn btn-primary">دریافت اپلیکیشن</a>
+                    </div>
+                    <!-- .page-content start -->
+                    <div class="page-content">
+                        <div class="container">
+                            <!-- .row start -->
+                            <div class="row mb-0 negative-top-margin">
+                                @foreach (var feature in item.App_Feature.Take(3)) {
+                                    <div class="col-md-4 col-sm-4">
+                                        <div class="feature-box style-1">
+                                            <div class="feature-body">
+                                                <span class="icon-container triggerAnimation animated @feature.Feature.GlyphIconName my-glyph" data-animate='zoomIn'>
+                                                </span>
+                                                <div class="custom-heading">
+                                                    <a href="#" title="@feature.Feature.Title">
+                                                        <h4>@feature.Feature.Title</h4>
+                                                    </a>
+                                                </div><!-- .custom-heading end -->
+                                                <p>
+                                                    @{
+                                                        string p = (feature.Feature.Text.Length > 80) ? feature.Feature.Text.Substring(0, 80) : feature.Feature.Text;
+                                                    }
+                                                    @p
+                                                    <a href="#" title="readMore" class="read-more">
+                                                        <span>
+                                                            [...]
+                                                        </span>
+                                                    </a>
+                                                </p>
+                                            </div><!-- .feature-body end -->
+                                        </div><!-- .feature-box-end -->
+                                    </div><!-- .col-md-4 end -->
+                                                        }
+                            </div><!-- .row end -->
+                        </div><!-- .container end -->
+                    </div><!-- .page-content end -->
+                </li><!-- SLIDE ONE END -->
+            <!-- SLIDE TWO -->
+                                                        }
+        </ul>
+    </div><!-- .tp-banner end -->
+</div><!-- .tp-banner-container end -->
+
+<div class="page-content quote style-1 custom-background bkg-darkgrey dark mb-70">
+    <!-- .container start -->
+    <div class="container">
+        <!-- .row start -->
+        <div class="row mb-0">
+            <!-- .col-md-9 start -->
+            <div class="col-md-11 col-sm-9 col-xs-12 mb-0">
+                <div class="quote-content">
+                    <div class="text">
+                        <h1 class="text-info">EPT - آخرین اخبار، دانلود اپلیکیشن و نمونه سوالات استخدامی</h1>
+                    </div>
+                </div>
+            </div><!-- .col-md-9 end -->
+            <!-- .col-md-3 start -->
+            <div class="col-md-1 col-sm-3 col-xs-12 mb-50">
+                <div class="quote-btn">
+                    <a href='/Home/Contact' title="تماس با ما" class="btn btn-primary float-left">
+                        تماس با ما
+                    </a>
+                </div>
+            </div><!-- .col-md-3 end -->
+        </div><!-- .row end -->
+    </div><!-- .container end -->
+</div><!-- .page-content.custom-background end -->
+
+<div class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-4">
+                <div class="feature-body">
+                    <ul class="list-group my-scroll table-bordered">
+                        <li class="alert alert-success list-group-item text-center"><h4><a href="/News/List" title="اخبار">لیست اخبار</a></h4></li>
+                        @{ int newsIndex = 1;}
+                        @foreach (var item in Model.News) {
+                                <li class="list-group-item">
+                                    <a href="/News/Details/@item.ID" title="اخبار استخدامی">
+                                        <span class="badge">@(newsIndex++)</span>
+                                        @if (item.Name.Length >= 100) { WriteLiteral(item.Name.Substring(0, 95) + "[...]"); } else { WriteLiteral(item.Name); }
+                                    </a>
+                                </li>
+                                }
+                    </ul>
+                </div><!-- .feature-body end -->
+            </div><!-- .col-md-4 end -->
+
+            <div class="col-md-4 col-sm-4">
+                <div class="feature-body">
+                    <ul class="list-group my-scroll table-bordered">
+                        <li class="alert alert-warning list-group-item text-center"><h4>نظرات</h4></li>
+                        @{ int commentIndex = 1;}
+                        @foreach (var item in Model.Comments) {
+                                <li class="list-group-item">
+                                    <a href="/News/Details/@item.NewsID#comment#@item.ID" title="آخرین نظرات اخبار استخدامی">
+                                        <span class="badge">@(commentIndex++)</span>
+                                        @if (item.Text.Length >= 100) { WriteLiteral(item.Text.Substring(0, 95) + "[...]"); } else { WriteLiteral(item.Text); }
+                                    </a>
+                                    <a class="text-danger" title="اخبار استخدامی" href="/News/Details/@item.NewsID">
+                                        [خبر مربوطه]
+                                    </a>
+                                </li>
+                                }
+                    </ul>
+                </div><!-- .feature-body end -->
+            </div><!-- .col-md-4 end -->
+
+            <div class="col-md-4 col-sm-4">
+                <div class="feature-body">
+                    <ul class="list-group my-scroll table-bordered">
+                        <li class="alert alert-danger list-group-item text-center">
+							<h4><a title="سوالات استخدامی سال های قبل" href="/Question/List/0">سوالات استخدامی سال های قبل</a></h4>
+							<hr />
+							<h4><a title="نمونه سوالات استخدامی" href="/Question/List/1">نمونه سوالات استخدامی</a></h4>
+						</li>
+                        @{ int questionIndex = 1;}
+                        @foreach (var item in Model.Questions) {
+                            <li class="list-group-item">
+                                <a href="/Question/Details/@item.ID" title="نمونه سوالات استخدامی">
+                                    <span class="badge">@(questionIndex++)</span>
+                                    @if (item.Name.Length >= 100) { WriteLiteral(item.Name.Substring(0, 95) + "[...]"); } else { WriteLiteral(item.Name); }
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div><!-- .feature-body end -->
+            </div><!-- .col-md-4 end -->
+        </div><!-- .row end -->
+    </div><!-- .container end -->
+</div><!-- .page-content end -->

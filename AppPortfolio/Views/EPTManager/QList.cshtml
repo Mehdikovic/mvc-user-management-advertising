@@ -1,0 +1,76 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@using AppPortfolio.Controllers
+
+@model IPagedList<AppPortfolio.Models.Question>
+
+@{
+    ViewBag.Title = "لیست سوالات EPT";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2 class="text-center text-success">لیست سوالات EPT</h2>
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right" })
+@Html.ActionLink("افزودن سوال EPT", "QCreate", null, new { @class = "btn btn-danger float-left" })
+<div class="clearfix"></div>
+<hr />
+<table class="table">
+    <tr>
+        <th>
+            نام
+        </th>
+        <th>
+            فایل
+        </th>
+        <th>
+            تاریخ ایجاد
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <a href="@item.Filepath" class="btn btn-success" title="@item.Name" alt="@item.Name">دانلود فایل</a>
+            </td>
+            <td class="direction-ltr">
+                @item.CreatedDate.ToFullPersianDate().ToShortDate()
+            </td>
+            <td>
+                @Html.ActionLink("حذف", "QDelete", new { id = item.ID }, new { @class = "btn btn-danger confirm-on-delete" }) |
+                @Html.ActionLink("بروز رسانی", "QUpdate", new { id = item.ID }, new { @class = "btn btn-warning" })
+            </td>
+        </tr>
+    }
+
+</table>
+<hr />
+
+<div class="row direction-ltr text-center">
+    @Html.PagedListPager(Model,
+    page => Url.Action("QList", new { page }),
+    new PagedListRenderOptions {
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        LinkToFirstPageFormat = "<< اولین",
+        LinkToPreviousPageFormat = "< قبلی",
+        LinkToNextPageFormat = "بعدی >",
+        LinkToLastPageFormat = "آخرین >>"
+    })
+</div>
+<hr />
+@section scripts {
+    <script src="~/wwwroot/Manage/js/confirm-bootstrap.js"></script>
+    <script>
+        $('.confirm-on-delete').confirmModal({
+            confirmTitle: 'تایید',
+            confirmMessage: 'آیا مطمئنید؟',
+            confirmOk: 'بله',
+            confirmCancel: 'خیر',
+            confirmDirection: 'rtl',
+        });
+    </script>
+}

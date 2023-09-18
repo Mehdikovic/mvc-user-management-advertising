@@ -1,0 +1,46 @@
+﻿@using AppPortfolio.Controllers
+
+@model  AppPortfolio.Models.App
+@{
+    ViewBag.Title = "اپلیکیشن EPT";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+    if (ViewBag.Error != null) { ViewBag.Error = "لطفاً پس از حذف اپلیکیشن موجود اقدام نمایید"; }
+}
+
+<h2 class="text-center text-success">اپلیکیشن EPT</h2>
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right" })
+@Html.ActionLink("افزودن اپلیکیشن EPT", "Create", null, new { @class = "btn btn-danger float-left" })
+<div class="clearfix"></div>
+<hr />
+
+<div class="row">
+    <div class="col-md-5 col-sm-12 col-xs-12">
+        <h3>@Model.Name</h3>
+        <p class="alert alert-danger">تاریخ ایجاد: </p>
+        <p class="direction-ltr alert alert-success">@Model.CreatedDate.ToFullPersianDate().ToLongDateTime()</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-xs-12">
+        <h3>تعداد خصوصیت: <span class="text-danger">@Model.App_Feature.Count()</span></h3>
+        <a href="@Model.Imagepath" title="@Model.Name">
+            <img class="img-responsive rounded mb-3 mb-md-0" src="@Model.Imagepath" alt="@Model.Name">
+        </a>
+        <p class="margin-bottom"></p>
+        <a class="btn btn-success" title="@Model.Name" href="@Model.Filepath">دانلود</a> |
+        @Html.ActionLink("حذف", "Delete", new { id = Model.ID }, new { @class = "confirm-on-delete btn btn-danger" }) |
+        <a class="btn btn-warning" title="افزودن خصوصیت" href="/AddFeatureToApp/AddFeatureToApp/@Model.ID">افزودن خصوصیت</a>
+    </div>
+</div>
+<hr />
+<h3 class="text-danger">@ViewBag.Error</h3>
+@section scripts {
+    <script src="~/wwwroot/Manage/js/confirm-bootstrap.js"></script>
+    <script>
+        $('.confirm-on-delete').confirmModal({
+            confirmTitle: 'تایید',
+            confirmMessage: 'آیا مطمئنید؟',
+            confirmOk: 'بله',
+            confirmCancel: 'خیر',
+            confirmDirection: 'rtl',
+        });
+    </script>
+}

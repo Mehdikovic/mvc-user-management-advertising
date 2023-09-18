@@ -1,0 +1,56 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@using AppPortfolio.Controllers
+
+@model IPagedList<AppPortfolio.Models.DataModels.Message>
+
+@{
+    ViewBag.Title = "لیست پیام ها";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+<div class="row">
+    @foreach (var item in Model) {
+        <div class="col-md-6 col-sm-6 table-bordered">
+            <p>
+                <span>تاریخ ارسال پیام: </span>
+                <span class="text-danger">@item.Date.ToFullPersianDate().ToLongDateTime()</span>
+            </p>
+            <p>
+                <span>ایمیل ارسال کننده:  </span>
+                <span class="text-danger">@item.Email</span>
+            </p>
+            <h4 class="alert alert-warning">موضوع: @item.Subject</h4>
+            <p class="alert alert-success">پیام: @item.Text</p>
+            @Html.ActionLink("حذف", "Delete", "MessageManager", new { id = item.ID }, new { @class = "btn btn-danger confirm-on-delete" })
+        </div>
+    }
+</div>
+<hr />
+<div class="row direction-ltr text-center">
+    @Html.PagedListPager(Model,
+    page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions {
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        LinkToFirstPageFormat = "<< اولین",
+        LinkToPreviousPageFormat = "< قبلی",
+        LinkToNextPageFormat = "بعدی >",
+        LinkToLastPageFormat = "آخرین >>"
+    })
+</div>
+<hr />
+@section scripts {
+    <script src="~/wwwroot/Manage/js/confirm-bootstrap.js"></script>
+    <script>
+        $('.confirm-on-delete').confirmModal({
+            confirmTitle: 'تایید',
+            confirmMessage: 'آیا مطمئنید؟',
+            confirmOk: 'بله',
+            confirmCancel: 'خیر',
+            confirmDirection: 'rtl',
+        });
+    </script>
+}

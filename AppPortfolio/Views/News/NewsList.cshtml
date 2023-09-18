@@ -1,0 +1,50 @@
+﻿@model IEnumerable<AppPortfolio.Models.HiringNews>
+@{
+    ViewBag.Title = "اخبار روز، مشاهده اخبار، مشاهده نظرات، خواندن خبر";
+}
+
+@section metaTags{
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، دانلود نمونه سوالات و نرم افزار استخدامی، مشاهده آخرین اخبار">
+    <meta name="keywords" content="اخبار استخدامی،نرم افزار های استخدامی، سنجش استخدامی،استخدام،نمونه سوالات استخدامی، نمونه سوال،EPT،آخرین اخبار استخدامی">
+    <link rel="canonical" href="/News/NewsList/@ViewBag.Date" />
+}
+
+<div class="mb-200"></div>
+
+<div class="page-content">
+    <div class="container mb-100">
+        <div class="row">
+            <a class="text-danger" href="/News/List" title="اخبار استخدامی">
+                <h1 class="alert alert-info text-center">اخبار استخدامی</h1>
+            </a>
+        </div>
+        <div class="row">
+			<h4>تاریخ</h4>
+            <h4><span class="text-danger">@ViewBag.Date</span></h4>
+            <hr />
+            <ul class="list list-group">
+                @foreach (var newsItem in Model) {
+                    <li class="list-group-item new-li-item-group-2 text-danger">
+                        @{
+                            string name = (newsItem.Name.Length >= 100) ? newsItem.Name.Substring(0, 97) + "..." : newsItem.Name;
+                        }
+                        <p><strong>@name</strong></p>
+                        <a class="test-2 text-danger" href="/News/Details/@newsItem.ID" data-toggle="tooltip" data-placement="top" title="@newsItem.Name">
+                            ادامه...
+                        </a>
+
+                    </li>
+                            }
+            </ul>
+        </div>
+    </div>
+</div>
+<p></p>
+<div class="mb-20"></div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

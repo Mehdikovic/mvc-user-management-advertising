@@ -1,0 +1,55 @@
+﻿@model AppPortfolio.Models.DataModels.Message
+@{
+    ViewBag.Title = "تماس با ما، ارتباط با ما، فرستادن پیام، ارسال پیام پشتیبانی";
+}
+@section metaTags{
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، درباه ما، تماس با ما">
+    <meta name="keywords" content="اخبار استخدامی،نرم افزار های استخدامی، سنجش استخدامی،استخدام،نمونه سوالات استخدامی، نمونه سوال،EPT،آخرین اخبار استخدامی">
+    <link rel="canonical" href="/Home/Contact" />
+}
+<div style="margin-bottom:200px"></div>
+<div class="page-content">
+    <div class="container">
+        <!-- .row start -->
+        <div class="row">
+            <a class="text-warning" title="تماس با ما" href="/Home/Contact">
+                <h1 class="alert alert-info text-center">تماس با ما</h1>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-xs-12">
+                <div class="custom-heading">
+                    <h3>تماس با ما</h3>
+                </div><!-- .custom-heading end -->
+                @if (ViewBag.Error != null) { <h3 class="alert alert-danger">@ViewBag.Error</h3> }
+                @if (ViewBag.Success != null) { <h3 class="alert alert-success">@ViewBag.Success</h3> }
+                <p>لطفاً با انتخاب موضوع مناسب ما را در خدمت رسانی هرچه بهتر یاری فرمایید</p>
+                <!-- .contact-form start -->
+                <div class="contact-form">
+                    @using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { @class = "wpcf7" })) {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control wpcf7-text" } })
+                            @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control direction-ltr wpcf7-text" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group wpcf7-message">
+                            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.TextAreaFor(model => model.Text, new { @class = "form-control wpcf7-textarea", rows = "4" })
+                            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+                        </div>
+                        <input type="submit" class="wpcf7-submit btn btn-primary float-left comment-reply" value="ارسال" />
+                    }
+                </div><!-- .comment-form end -->
+            </div><!-- .col-md-8 end -->
+        </div><!-- .row end -->
+    </div><!-- .container end -->
+</div><!-- .page-content end -->
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

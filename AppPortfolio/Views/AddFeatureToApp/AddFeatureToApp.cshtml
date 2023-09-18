@@ -1,0 +1,87 @@
+﻿@using AppPortfolio.Controllers
+
+@model AppPortfolio.Models.DataModels.ViewModels.JAF_ViewModel
+@{
+    ViewBag.Title = "لیست خصوصیات اپلیکیشن";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2 class="text-center text-success">@ViewBag.Title</h2>
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right" })
+<div class="clearfix"></div>
+<hr />
+
+<div class="row">
+    <div class="col-md-5 col-sm-12 col-xs-12">
+        <h3>@Model.AppFound.Name</h3>
+        <p class="alert alert-info">تاریخ ایجاد: </p>
+        <p class="direction-ltr alert alert-success">@Model.AppFound.CreatedDate.ToFullPersianDate().ToLongDateTime()</p>
+        <p class="alert alert-info">تاریخ بروزرسانی: </p>
+        <p class="direction-ltr alert alert-success">@Model.AppFound.UpdatedDate.ToFullPersianDate().ToLongDateTime()</p>
+    </div>
+    <div class="col-md-7 col-sm-12 col-xs-12">
+        <h3>تصویر اپلیکیشن</h3>
+        <a href="@Model.AppFound.Imagepath" title="@Model.AppFound.Name">
+            <img class="img-responsive rounded mb-3 mb-md-0" src="@Model.AppFound.Imagepath" alt="@Model.AppFound.Name">
+        </a>
+        <p class="margin-bottom"></p>
+        @Html.ActionLink("حذف اپلیکیشن و خصوصیات آن", "Delete", "AppManager", new { id = Model.AppFound.ID }, new { @class = "confirm-on-delete btn btn-danger" })
+    </div>
+</div>
+
+<h3 class="alert alert-success">لیست خصوصیاتی که اپلیکیشن دارد</h3>
+<hr />
+
+<div class="row">
+    <table class="table table-hover">
+        @if (Model.FeaturesAppHas.Count() <= 0) {
+            <tr>
+                <td><span class="text-danger"> خصوصیتی وجود ندارد</span></td>
+            </tr>
+        } else {
+            foreach (var featurItem in Model.FeaturesAppHas) {
+                <tr class="alert-warning">
+                    <td><span class="@featurItem.Feature.GlyphIconName"></span></td>
+                    <td>@featurItem.Feature.Title</td>
+                    <td>@featurItem.Feature.Text</td>
+                    <td>@Html.ActionLink("حذف", "Delete", "AddFeatureToApp", new { appId = Model.AppFound.ID, featureId = featurItem.FeatureID }, new { @class = "btn btn-success" })</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+
+<h3 class="alert alert-danger">لیست خصوصیاتی که اپلیکیشن ندارد</h3>
+<hr />
+
+<div class="row">
+    <table class="table table-hover">
+        @if (Model.FeaturesAppDoesntHas.Count() <= 0) {
+            <tr>
+                <td><span class="text-danger"> خصوصیتی وجود ندارد</span></td>
+            </tr>
+        } else {
+            foreach (var featurItem in Model.FeaturesAppDoesntHas) {
+                <tr class="alert-warning">
+                    <td><span class="@featurItem.GlyphIconName"></span></td>
+                    <td>@featurItem.Title</td>
+                    <td>@featurItem.Text</td>
+                    <td>@Html.ActionLink("افزودن", "Add", "AddFeatureToApp", new { appId = Model.AppFound.ID, featureId = featurItem.ID }, new { @class = "btn btn-success" })</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+<hr />
+@section scripts {
+    <script src="~/wwwroot/Manage/js/confirm-bootstrap.js"></script>
+    <script>
+        $('.confirm-on-delete').confirmModal({
+            confirmTitle: 'تایید',
+            confirmMessage: 'آیا مطمئنید؟',
+            confirmOk: 'بله',
+            confirmCancel: 'خیر',
+            confirmDirection: 'rtl',
+        });
+    </script>
+}

@@ -1,0 +1,90 @@
+﻿@model AppPortfolio.Models.App
+
+@{
+    ViewBag.Title = "بروز رسانی اپلیکیشن";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/wwwroot/Selectize/css/selectize.css" rel="stylesheet" />
+}
+
+<h2>بروز رسانی اپلیکیشن</h2>
+<hr />
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right", target = "_blank" })
+@Html.ActionLink("لیست اپلیکیشن ها", "Index", "AppManager", null, new { @class = "btn btn-danger float-left" })
+<div class="clearfix"></div>
+<hr />
+<div class="row">
+    @if (ViewBag.Error != null) { <h3 class="alert alert-danger">@ViewBag.Error</h3> }
+    @if (ViewBag.Success != null) { <h3 class="alert alert-success">@ViewBag.Success</h3> }
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Filepath, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Filepath, new { htmlAttributes = new { @class = "form-control direction-ltr path-control-width" } })
+                    <h5 class="text-left direction-ltr">File path pattern: <span class="english-font text-danger margin-right">/wwwroot/uploads/[apk,doc,image]/filename.extention</span></h5>
+                    @Html.ValidationMessageFor(model => model.Filepath, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Imagepath, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Imagepath, new { htmlAttributes = new { @class = "form-control direction-ltr path-control-width" } })
+                    <span>اندازه تصویر</span><span class="english-font margin-right">1920x700</span>
+                    <h5 class="text-left direction-ltr">File path pattern: <span class="english-font text-danger margin-right">/wwwroot/uploads/[apk,doc,image]/filename.extention</span></h5>
+                    @Html.ValidationMessageFor(model => model.Imagepath, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "path-control-width", id = "selectize_input" } })
+                    @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="بروز رسانی اپلیکیشن" class="btn btn-danger" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<hr />
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/wwwroot/Manage/js/clipboardcopy.js" type="text/javascript"></script>
+    <script src="~/wwwroot/Selectize/js/selectize.min.js" type="text/javascript"></script>
+    <script>
+        $('#selectize_input').selectize({
+            delimiter: ',',
+            persist: false,
+            create: function (input) {
+                return {
+                    value: input,
+                    text: input
+                }
+            }
+        });
+    </script>
+
+}

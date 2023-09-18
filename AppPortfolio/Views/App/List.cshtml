@@ -1,0 +1,70 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@using AppPortfolio.Controllers
+
+@model IPagedList<AppPortfolio.Models.App>
+
+@{
+    ViewBag.Title = "دانلود نرم افزار های استخدامی، نرم افزار های استخدامی، اپلیکیشن";
+}
+
+@section metaTags{
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، دانلود نمونه سوالات و نرم افزار استخدامی، مشاهده آخرین اخبار">
+    <meta name="keywords" content="اخبار استخدامی،نرم افزار های استخدامی، سنجش استخدامی،استخدام،نمونه سوالات استخدامی، نمونه سوال،EPT،آخرین اخبار استخدامی">
+    <link rel="canonical" href="/App/List" />
+}
+
+<div style="margin-bottom:200px"></div>
+
+<div class="page-content">
+    <div class="container">
+        <div class="row">
+            <a href="/App/List" title="نرم افزار های استخدامی">
+                <h1 class="alert alert-info text-center">
+                    نرم افزار های استخدامی
+                </h1>
+            </a>
+        </div>
+        @foreach (var item in Model) {
+        <!-- Project One -->
+            <div class="row">
+                <div class="col-md-7 col-sm-12 col-xs-12 left-float">
+                    <h3>@item.Name</h3>
+                    <a href="@item.Filepath" title="@item.Name">
+                        <img class="img-responsive rounded mb-3 mb-md-0" src="@item.Imagepath" alt="@item.Name">
+                    </a>
+                </div>
+                <div class="col-md-5 col-sm-12 col-xs-12 left-float">
+                    <h3>@item.Name</h3>
+                    <ul class="list-group">
+                        @foreach (var feature in item.App_Feature) {
+                            <li class="list-group-item list-group-item-success">
+                                <span class="@feature.Feature.GlyphIconName"></span>
+                                @feature.Feature.Title
+                                <p>@feature.Feature.Text</p>
+                            </li>
+                        }
+                    </ul>
+                    <a class="btn btn-primary" title="دانلود @item.Name" href="/App/Details/@item.ID">دانلود</a>
+                    <hr />
+                </div>
+            </div>
+            <hr />
+        }
+        <!-- /.row -->
+    </div>
+</div>
+
+<div class="row direction-ltr text-center">
+    @Html.PagedListPager(Model,
+    page => Url.Action("List", new { page }),
+    new PagedListRenderOptions {
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        LinkToFirstPageFormat = "<< اولین",
+        LinkToPreviousPageFormat = "< قبلی",
+        LinkToNextPageFormat = "بعدی >",
+        LinkToLastPageFormat = "آخرین >>"
+    })
+</div>
+<hr />

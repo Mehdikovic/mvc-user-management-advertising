@@ -1,0 +1,71 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@using AppPortfolio.Controllers
+
+@model IPagedList<AppPortfolio.Models.Question>
+
+@{
+    ViewBag.Title = "سوالات استخدامی، دانلود نمونه سوالات استخدامی سال های پیشین و جاری";
+}
+
+@section metaTags{
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، دانلود نمونه سوالات و نرم افزار استخدامی، مشاهده آخرین اخبار">
+    <meta name="keywords" content="اخبار استخدامی،نرم افزار های استخدامی، سنجش استخدامی،استخدام،نمونه سوالات استخدامی، نمونه سوال،EPT،آخرین اخبار استخدامی">
+    <link rel="canonical" href="/Question/List/1" />
+}
+
+<div class="mb-200"></div>
+
+<div class="page-content">
+    <div class="container">
+        <div class="row">
+            <a class="text-danger" href="/Question/List/1" title="نمونه سوالات استخدامی">
+                <h1 class="alert alert-info text-center">نمونه سوالات استخدامی</h1>
+            </a>
+        </div>
+        <div class="row">
+            <table class="table table-hover">
+                @for (int i = 0; i < Model.Count; ++i) {
+                    <tr class="my-table-tr">
+                        @{
+                            var question = Model.ElementAt(i);
+                            int index = ((ViewBag.Page - 1) * 10) + i + 1;
+                        }
+                        <td class="col-md-1 col-xs-12">@index</td>
+                        <td class="col-md-7 col-xs-12">@question.Name</td>
+                        <td class="col-md-2 col-xs-12 direction-ltr question-data-date">
+                            @question.CreatedDate.ToFullPersianDate().ToShortDate()
+                        </td>
+                        <td class="col-md-2 col-xs-12">
+                            <a class="test btn btn-block btn-warning" href="/Question/Details/@question.ID" data-toggle="tooltip" data-placement="top" title="@question.Name">
+                                <strong>دانلود</strong>
+                            </a>
+                        </td>
+                    </tr>
+                            }
+            </table>
+
+        </div>
+    </div>
+</div>
+<hr />
+<div class="row direction-ltr text-center">
+    @Html.PagedListPager(Model,
+    page => Url.Action("List", new { page }),
+    new PagedListRenderOptions {
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        LinkToFirstPageFormat = "<< اولین",
+        LinkToPreviousPageFormat = "< قبلی",
+        LinkToNextPageFormat = "بعدی >",
+        LinkToLastPageFormat = "آخرین >>"
+    })
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

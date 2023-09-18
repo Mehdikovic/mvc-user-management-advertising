@@ -1,0 +1,77 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@using AppPortfolio.Controllers
+
+@model IPagedList<AppPortfolio.Models.Feature>
+
+@{
+    ViewBag.Title = "لیست خصوصیات";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2 class="text-center text-success">لیست خصوصیات</h2>
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right" })
+@Html.ActionLink("افزودن خصوصیت", "Create", null, new { @class = "btn btn-danger float-left" })
+<div class="clearfix"></div>
+<hr />
+
+<table class="table">
+    <tr>
+        <th>
+            تیتر خصوصیت
+        </th>
+        <th>
+            متن
+        </th>
+        <th>
+           نام آیکن glyph
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Text)
+        </td>
+        <td>
+           <span class="my-glyph @item.GlyphIconName"></span>
+        </td>
+        <td>
+            @Html.ActionLink("بروزرسانی", "Edit", new { id = item.ID }, new { @class = "btn btn-warning" }) |
+            @Html.ActionLink("حذف", "Delete", new { id = item.ID }, new { @class = "confirm-on-delete btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>
+<hr/>
+
+<div class="row direction-ltr text-center">
+    @Html.PagedListPager(Model,
+    page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions {
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        LinkToFirstPageFormat = "<< اولین",
+        LinkToPreviousPageFormat = "< قبلی",
+        LinkToNextPageFormat = "بعدی >",
+        LinkToLastPageFormat = "آخرین >>"
+    })
+</div>
+<hr />
+@section scripts {
+    <script src="~/wwwroot/Manage/js/confirm-bootstrap.js"></script>
+    <script>
+        $('.confirm-on-delete').confirmModal({
+            confirmTitle: 'تایید',
+            confirmMessage: 'آیا مطمئنید؟',
+            confirmOk: 'بله',
+            confirmCancel: 'خیر',
+            confirmDirection: 'rtl',
+        });
+    </script>
+}

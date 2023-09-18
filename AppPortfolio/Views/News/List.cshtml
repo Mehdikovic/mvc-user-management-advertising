@@ -1,0 +1,60 @@
+﻿@model IEnumerable<AppPortfolio.Models.DataModels.ViewModels.NewsViewModel>
+@{
+    ViewBag.Title = "خبر استخدامی، دانلود اخبار، اخبار استخدامی، آخرین اخبار";
+}
+
+@section metaTags{
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، دانلود نمونه سوالات و نرم افزار استخدامی، مشاهده آخرین اخبار">
+    <meta name="keywords" content="اخبار استخدامی،نرم افزار های استخدامی، سنجش استخدامی،استخدام،نمونه سوالات استخدامی، نمونه سوال،EPT،آخرین اخبار استخدامی">
+    <link rel="canonical" href="/News/List" />
+}
+<div class="mb-200"></div>
+
+<div class="page-content">
+    <div class="container  mb-100">
+        <div class="row">
+            <a class="text-danger" href="/News/List" title="اخبار استخدامی">
+                <h1 class="alert alert-info text-center">اخبار استخدامی</h1>
+            </a>
+        </div>
+        <div class="row">
+            <div class="panel-group" id="accordion">
+                @foreach (var item in Model) {
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" title="اخبار استخدامی" data-parent="#accordion" href="#@item.YearMonth.Replace("/","")">
+                                    @AppPortfolio.Controllers.PDC.GetPersinaDateYearMonth(item.YearMonth)
+                                    @*<span class="badge badge-primary badge-pill">@item.Count</span>*@
+                                    <span class="solid-black glyphicon glyphicon-menu-down"></span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="@item.YearMonth.Replace("/","")" class="panel-collapse collapse">
+                            <ul class="list-group">
+                                @foreach (var newsItem in item.NewsInDays) {
+                                    <li class="list-group-item new-li-item-group text-danger">
+                                        @{
+                                            var link_ID = (item.YearMonth + "-" + newsItem.Day).Replace('/', '-');
+                                        }
+                                        <a class="test-2 text-danger" href="/News/NewsList/@link_ID" data-toggle="tooltip" data-placement="top" title="@link_ID">
+                                            اخبار روز <strong>@Convert.ToByte(newsItem.Day)</strong> ام
+                                            [@newsItem.Count]
+                                        </a>
+                                    </li>
+                                            }
+                            </ul>
+                        </div>
+                    </div>
+                                            }
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

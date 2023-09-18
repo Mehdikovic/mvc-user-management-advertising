@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "خطا";
+}
+
+<div class="mb-200"></div>
+
+<div class="page-content">
+    <div class="container mb-100">
+        <div class="row text-center ">
+            <h3 class="text-danger">@ViewBag.Error</h3>
+                  @Html.ActionLink("پشتیبانی", "Contact", "Home", null, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+</div>
+
+<div class="mb-200"></div>

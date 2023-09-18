@@ -1,0 +1,176 @@
+﻿@model AppPortfolio.Models.Question
+
+@{
+    ViewBag.Title = "افزودن نمونه سوال";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/wwwroot/Selectize/css/selectize.css" rel="stylesheet" />
+}
+
+<h2>افزودن سوال جدید</h2>
+<hr />
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right", target = "_blank" })
+@Html.ActionLink("لیست سوالات", "Index", "QuestionManager", null, new { @class = "btn btn-danger float-left" })
+<div class="clearfix"></div>
+<hr />
+<div class="row">
+    @if (ViewBag.Error != null) { <h3 class="alert alert-danger">@ViewBag.Error</h3> }
+    @if (ViewBag.Success != null) { <h3 class="alert alert-success">@ViewBag.Success</h3> }
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 path-control-width" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">تاریخ درج خبر </label>
+                <div class="col-md-10">
+                    <span>سال</span>
+                    <select id="year" class="form-control" name="year"></select>
+                    <span>ماه</span>
+                    <select id="month" class="form-control" name="month"></select>
+                    <span>روز</span>
+                    <select id="day" class="form-control" name="day"></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Filepath, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Filepath, new { htmlAttributes = new { @class = "form-control direction-ltr path-control-width" } })
+                    <h5 class="text-left direction-ltr">File path pattern: <span class="english-font text-danger margin-right">/wwwroot/uploads/[apk,doc,image]/filename.extention</span></h5>
+                    @Html.ValidationMessageFor(model => model.Filepath, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control direction-ltr path-control-width", id = "text_editor" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "path-control-width", id = "selectize_input" } })
+                    @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="ایجاد سوال جدید" class="btn btn-danger" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<hr />
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/wwwroot/Manage/js/JaliliDate.js"></script>
+    <script src="~/wwwroot/Manage/js/clipboardcopy.js" type="text/javascript"></script>
+    <script src="~/wwwroot/Manage/CKEditor/ckeditor.js"></script>
+    <script src="~/wwwroot/Selectize/js/selectize.min.js" type="text/javascript"></script>
+    <script>
+        (function () {
+            $('#selectize_input').selectize({
+                delimiter: ',',
+                persist: false,
+                create: function (input) {
+                    return {
+                        value: input,
+                        text: input
+                    }
+                }
+            });
+            var month_values = { "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "11": 11, "12": 12 };
+            var $year = $("select#year");
+            var $month = $("select#month");
+            var $day = $("select#day");
+            addYear();
+            addMonth(month_values);
+
+            $month.on('change', function () {
+                var $year_selected = $('select#year').find(":selected").text();
+                if (this.value <= 6)
+                    addDay(31);
+                else if (7 <= this.value && this.value <= 11)
+                    addDay(30);
+                else if (this.value == 12) {
+                    if ($year_selected % 4 === 3)
+                        addDay(30);
+                    else
+                        addDay(29);
+                }
+
+            });
+
+            $year.on('change', function () {
+                var $month_selected = $('select#month').find(":selected").text();
+
+                if ($month_selected == 12 && this.value % 4 == 3)
+                    addDay(30);
+                else if ($month_selected == 12 && this.value % 4 != 3)
+                    addDay(29);
+            });
+
+            function addDay(daysCount) {
+                document.getElementById("day").options.length = 0;
+                var date_day = new Date().getJalaliDate();
+                for (var i = 1; i <= daysCount; ++i) {
+                    if (i === date_day)
+                        $day.append($("<option selected />").val(i).text(i));
+                    else
+                        $day.append($("<option />").val(i).text(i));
+                }
+            };
+
+            function addMonth(month_values) {
+                var date_month = new Date().getJalaliMonth();
+                var $year_selected = $('select#year').find(":selected").text
+                $.each(month_values, function (key, value) {
+                    if (value === date_month)
+                        $month.append($("<option selected />").val(key).text(value));
+                    else
+                        $month.append($("<option />").val(key).text(value));
+                });
+                if (date_month <= 6)
+                    addDay(31);
+                else if (7 <= date_month && date_month <= 11)
+                    addDay(30);
+                else if (date_month == 12) {
+                    if ($year_selected % 4 === 3)
+                        addDay(30);
+                    else
+                        addDay(29);
+                }
+            };
+
+            function addYear() {
+                var date_year = new Date().getJalaliFullYear();
+                for (var i = date_year; i >= date_year - 10; --i) {
+                    if (i === date_year)
+                        $year.append($("<option selected />").val(i).text(i));
+                    else
+                        $year.append($("<option />").val(i).text(i));
+                }
+            };
+
+            CKEDITOR.replace('text_editor');
+        })();
+    </script>
+
+}

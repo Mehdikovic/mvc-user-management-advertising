@@ -1,0 +1,59 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@using AppPortfolio.Controllers
+
+@model IPagedList<AppPortfolio.Models.Junc_Customer_Question>
+
+@{
+    ViewBag.Title = "لیست سوالات کاربر";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2 class="text-center text-success">لیست سوالات کاربر</h2>
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right" })
+@Html.ActionLink("افزودن سوال", "Create", "QuestionManager", null, new { @class = "btn btn-danger float-left" })
+<div class="clearfix"></div>
+<hr />
+<table class="table">
+    <tr>
+        <th>
+            نام
+        </th>
+        <th>
+            فایل
+        </th>
+        <th>
+            تاریخ دانلود سوال توسط کاربر
+        </th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Question.Name)
+            </td>
+            <td>
+                <a href="@item.Question.Filepath" title="دانلود @item.Question.Name" class="btn btn-success">دانلود فایل</a>
+            </td>
+            <td class="direction-ltr">
+                @item.DateOfDownload.ToFullPersianDate().ToShortDate()
+            </td>
+        </tr>
+    }
+
+</table>
+<hr />
+
+<div class="row direction-ltr text-center">
+    @Html.PagedListPager(Model,
+    page => Url.Action("Details", new { page }),
+    new PagedListRenderOptions {
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        LinkToFirstPageFormat = "<< اولین",
+        LinkToPreviousPageFormat = "< قبلی",
+        LinkToNextPageFormat = "بعدی >",
+        LinkToLastPageFormat = "آخرین >>"
+    })
+</div>
+<hr />

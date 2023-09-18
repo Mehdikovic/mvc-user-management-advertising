@@ -1,0 +1,68 @@
+﻿@model AppPortfolio.Models.Feature
+
+@{
+    ViewBag.Title = "بروز رسانی خصوصیت جدید";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2>بروز رسانی خصوصیت جدید</h2>
+<hr />
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right", target = "_blank" })
+@Html.ActionLink("لیست خصوصیات", "Index", "FeatureManager", null, new { @class = "btn btn-danger float-left" })
+<div class="clearfix"></div>
+<hr />
+
+<div class="row">
+    @if (ViewBag.Error != null) { <h3 class="alert alert-danger">@ViewBag.Error</h3> }
+    @if (ViewBag.Success != null) { <h3 class="alert alert-success">@ViewBag.Success</h3> }
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Text, new { @class = "form-control path-control-width", cols = 120, rows = 5 })
+                    @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.GlyphIconName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.GlyphIconName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.GlyphIconName, "", new { @class = "text-danger" })
+                </div>
+                <p>
+                    برای استفاده از آیکن لطفاً نام آیکن دلخواه موجود در
+                    <a href="https://getbootstrap.com/docs/3.3/components/#glyphicons-glyphs">آدرس</a>
+                    را قرار دهید
+                    <br />
+                    در صورت خالی بودن مقدار
+                    <span class="text-success">glyphicon glyphicon-star</span>
+                    قرار میگیرد
+                </p>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="بروز رسانی خصوصیت" class="btn btn-danger" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<hr />
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

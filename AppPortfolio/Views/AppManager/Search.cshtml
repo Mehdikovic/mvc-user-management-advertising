@@ -1,0 +1,79 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@using AppPortfolio.Controllers
+
+@model AppPortfolio.Models.DataModels.ViewModels.SearchViewModels.AppSearchViewModel
+
+@{
+    ViewBag.Title = "افزودن اپلیکیشن";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2>جستجوی اپلیکیشن</h2>
+<hr />
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right", target = "_blank" })
+<div class="clearfix"></div>
+<hr />
+<div class="row">
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.App.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.App.Name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="جستجو" class="btn btn-danger" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<hr />
+<h2>نتیجه</h2>
+<div class="clearfix"></div>
+<hr />
+@if (Model != null && Model.Apps != null) {
+    foreach (var item in Model.Apps) {
+        <div class="row">
+            <div class="col-md-5 col-sm-12 col-xs-12">
+                <h3>@item.Name</h3>
+                <p class="alert alert-danger">تاریخ ایجاد: </p>
+                <p class="direction-ltr alert alert-success">@item.CreatedDate.ToFullPersianDate().ToLongDateTime()</p>
+                <p class="alert alert-danger">تاریخ بروزرسانی: </p>
+                <p class="direction-ltr alert alert-success">@item.UpdatedDate.ToFullPersianDate().ToLongDateTime()</p>
+            </div>
+            <div class="col-md-7 col-sm-12 col-xs-12">
+                <h3>تعداد خصوصیت: <span class="text-danger">@item.App_Feature.Count()</span></h3>
+                <a href="@item.Imagepath" title="@item.Name">
+                    <img class="img-responsive rounded mb-3 mb-md-0" src="@item.Imagepath" alt="@item.Name">
+                </a>
+                <p class="margin-bottom"></p>
+                <a class="btn btn-success" title="@item.Name" href="@item.Filepath">دانلود</a> |
+                @Html.ActionLink("بروزرسانی", "Edit", new { id = item.ID }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("حذف", "Delete", new { id = item.ID }, new { @class = "confirm-on-delete btn btn-danger" }) |
+                <a class="btn btn-warning" title="@item.Name" href="/AddFeatureToApp/AddFeatureToApp/@item.ID">افزودن خصوصیت</a>
+            </div>
+        </div>
+        <hr />
+    }
+}
+<hr />
+@section scripts {
+    <script src="~/wwwroot/Manage/js/confirm-bootstrap.js"></script>
+    <script>
+        $('.confirm-on-delete').confirmModal({
+            confirmTitle: 'تایید',
+            confirmMessage: 'آیا مطمئنید؟',
+            confirmOk: 'بله',
+            confirmCancel: 'خیر',
+            confirmDirection: 'rtl',
+        });
+    </script>
+}

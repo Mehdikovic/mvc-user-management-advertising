@@ -1,0 +1,59 @@
+﻿@model AppPortfolio.Models.App
+
+@{
+    ViewBag.Title = "دانلود نرم افزار EPT، دانلود نرم افزار استخدامی، دانلود نرم افزار";
+    string tagsResult = Utility.GetTags(Model.Tags);
+}
+
+@section metaTags{
+
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، دانلود نمونه سوالات EPT و نرم افزار استخدامی EPT، مشاهده آخرین اخبار">
+    <meta name="keywords" content="@tagsResult">
+    <link rel="canonical" href="/EPT/App" />
+}
+
+<div style="margin-bottom:200px"></div>
+
+<div class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a title="دانلود نرم افزار @Model.Name" href="/EPT/App">
+                    <h1 class="alert alert-info text-center">دانلود نرم افزار @Model.Name</h1>
+                </a>
+            </div>
+        </div>
+        <!-- Project One -->
+        <div class="row">
+            <div class="col-md-7 col-sm-12 col-xs-12 left-float">
+                <h3>EPT</h3>
+                <a href="@Model.Filepath" title="@Model.Name">
+                    <img class="img-responsive rounded mb-3 mb-md-0" src="@Model.Imagepath" alt="@Model.Name">
+                </a>
+            </div>
+            <div class="col-md-5 col-sm-12 col-xs-12 left-float">
+                <h3>@Model.Name</h3>
+                <ul class="list-group">
+                    @foreach (var feature in Model.App_Feature) {
+                        <li class="list-group-item list-group-item-success">
+                            <span class="@feature.Feature.GlyphIconName"></span>
+                            @feature.Feature.Title
+                            <p>@feature.Feature.Text</p>
+                        </li>
+                    }
+                </ul>
+                <p></p>
+                <a class="btn btn-primary" href="@Model.Filepath" title="@Model.Name">دانلود</a>
+            </div>
+        </div>
+        <hr />
+        <h4>تگ ها</h4>
+        <ul class="list-inline">
+            @foreach (var tag in Model.Tags.Split(',')) {
+                <li class="list-group-item"><h6>@tag</h6></li>
+            }
+        </ul>
+        <!-- /.row -->
+        <hr>
+    </div>
+</div>

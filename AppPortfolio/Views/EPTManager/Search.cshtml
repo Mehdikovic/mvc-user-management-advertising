@@ -1,0 +1,88 @@
+﻿@using AppPortfolio.Controllers;
+
+@model AppPortfolio.Models.DataModels.ViewModels.SearchViewModels.QuestionSearchViewModel
+
+@{
+    ViewBag.Title = "جستجوی نمونه سوال EPT";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right", target = "_blank" })
+<div class="clearfix"></div>
+
+<div class="row">
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Question.Name, htmlAttributes: new { @class = "control-label col-md-2 path-control-width" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Question.Name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="جستجو" class="btn btn-danger" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<hr />
+
+
+<h2 class="text-center text-success">نتیجه</h2>
+<div class="clearfix"></div>
+<table class="table">
+    <tr>
+        <th>
+            نام
+        </th>
+        <th>
+            فایل
+        </th>
+        <th>
+            تاریخ ایجاد
+        </th>
+        <th></th>
+    </tr>
+    @if (Model != null && Model.Question != null) {
+        foreach (var item in Model.Questions) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a href="@item.Filepath" title="@item.Name" alt="@item.Name" class="btn btn-success">دانلود فایل</a>
+                </td>
+                <td class="direction-ltr">
+                    @item.CreatedDate.ToFullPersianDate().ToShortDate()
+                </td>
+                <td>
+                    @Html.ActionLink("حذف", "Delete", new { id = item.ID }, new { @class = "btn btn-danger confirm-on-delete" }) |
+                    @Html.ActionLink("بروز رسانی", "Update", new { id = item.ID }, new { @class = "btn btn-warning" })
+                </td>
+            </tr>
+        }
+    }
+</table>
+<hr />
+
+@section scripts {
+    <script src="~/wwwroot/Manage/js/confirm-bootstrap.js"></script>
+    <script>
+        $('.confirm-on-delete').confirmModal({
+            confirmTitle: 'تایید',
+            confirmMessage: 'آیا مطمئنید؟',
+            confirmOk: 'بله',
+            confirmCancel: 'خیر',
+            confirmDirection: 'rtl',
+        });
+    </script>
+}

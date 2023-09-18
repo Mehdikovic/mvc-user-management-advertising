@@ -1,0 +1,113 @@
+﻿@model AppPortfolio.Models.DataModels.ViewModels.CustomerViewModel
+@{
+    ViewBag.Title = "ثبت نام و ورود جهت دانلود نمونه سوالات استخدامی و EPT";
+}
+@section metaTags{
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، ثبت نام، ورود به سایت">
+    <meta name="keywords" content="اخبار استخدامی،نرم افزار های استخدامی، سنجش استخدامی،استخدام،نمونه سوالات استخدامی، نمونه سوال،EPT،آخرین اخبار استخدامی">
+    <link rel="canonical" href="/Customer/Register" />
+}
+
+<div style="margin-bottom:200px"></div>
+<div class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a title="ثبت نام و ورود به سایت" href="/Customer/Register">
+                    <h1 class="alert alert-info text-center">
+                        ثبت نام و ورود به سایت
+                    </h1>
+                </a>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" title="ثبت نام" href="#menu1">ثبت نام</a></li>
+            <li><a data-toggle="tab" href="#menu2" title="ورود">ورود</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="menu1" class="tab-pane fade  in active">
+                <div class="row">
+                    <div class="col-md-8 col-xs-12">
+                        <div class="custom-heading">
+                            <h2>
+                                <span class="text-success">ثبت نام</span>
+                                به منظور دانلود نمونه سوالات
+                            </h2>
+                        </div><!-- .custom-heading end -->
+                        <p></p>
+                        <!-- .contact-form start -->
+                        <div class="contact-form">
+                            @using (Html.BeginForm("Register", "Customer", FormMethod.Post, new { @class = "wpcf7" })) {
+                                @Html.AntiForgeryToken()
+                                <div class="width-50">
+                                    @Html.LabelFor(model => model.Customer.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.EditorFor(model => model.Customer.Phone, new { htmlAttributes = new { @class = "form-control wpcf7-text phone-number-control", style = "direction:ltr;" } })
+                                    @Html.ValidationMessageFor(model => model.Customer.Phone, "", new { @class = "text-danger direction-ltr" })
+                                </div>
+                                <div class="width-50">
+                                    @Html.LabelFor(model => model.Customer.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.EditorFor(model => model.Customer.Email, new { htmlAttributes = new { @class = "form-control wpcf7-text", style = "direction:ltr;" } })
+                                    @Html.ValidationMessageFor(model => model.Customer.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <p></p>
+                                <input type="submit" class="wpcf7-submit btn btn-primary comment-reply" value="ثبت نام" />
+                            }
+                        </div><!-- .comment-form end -->
+                    </div><!-- .col-md-8 end -->
+                </div><!-- .row end -->
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                <!-- .row start -->
+                <div class="row">
+                    <div class="col-md-8 col-xs-12">
+                        <div class="custom-heading">
+                            <h2>
+                                <span class="text-danger">ورود</span>
+                                به منظور دانلود نمونه سوالات
+                            </h2>
+                        </div><!-- .custom-heading end -->
+                        <p></p>
+                        <!-- .contact-form start -->
+                        <div class="contact-form">
+                            @using (Html.BeginForm("LogIn", "Customer", FormMethod.Post, new { @class = "wpcf7" })) {
+                                @Html.AntiForgeryToken()
+                                <div class="width-50">
+                                    @Html.LabelFor(model => model.CustomerLogin.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.EditorFor(model => model.CustomerLogin.Phone, new { htmlAttributes = new { @class = "form-control wpcf7-text phone-number-control", id = "phoneNumber", style = "direction:ltr;" } })
+                                    @Html.ValidationMessageFor(model => model.CustomerLogin.Phone, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="width-50">
+                                    @Html.LabelFor(model => model.CustomerLogin.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.EditorFor(model => model.CustomerLogin.Email, new { htmlAttributes = new { @class = "form-control wpcf7-text", style = "direction:ltr;" } })
+                                    @Html.ValidationMessageFor(model => model.CustomerLogin.Email, "", new { @class = "text-danger" })
+                                </div>
+                                <p></p>
+                                <input type="submit" class="wpcf7-submit btn btn-primary comment-reply" value="ورود" />
+                            }
+                        </div><!-- .comment-form end -->
+                    </div><!-- .col-md-8 end -->
+                </div><!-- .row end -->
+            </div>
+            <h3 class="text-danger"><span class="text-success">@ViewBag.RegisterPrefix</span>@ViewBag.RegisterError</h3>
+            <h3 class="text-danger"><span class="text-success">@ViewBag.LogInPrefix</span>@ViewBag.LogInError</h3>
+            <p></p>
+        </div>
+    </div>
+    <!-- .row start -->
+
+</div><!-- .container end -->
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/wwwroot/js/jquery.maskedinput.min.js"></script>
+    <script>
+        $(function () {
+            $.mask.definitions['1'] = "[0123456789]";
+            $.mask.definitions['9'] = '';
+            $(".phone-number-control").mask("0911-111-1111", { placeholder: "*" });
+        })();
+    </script>
+}

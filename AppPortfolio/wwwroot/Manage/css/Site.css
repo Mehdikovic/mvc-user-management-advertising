@@ -1,0 +1,92 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    text-align: right;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.Message-Input {
+    max-width: 500px;
+}
+
+#editro {
+    height: 400px;
+}
+
+#table-align table {
+    direction: ltr;
+    padding: 5px;
+    width:100%;
+}
+    #table-align table tr {
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+    }
+
+        #table-align table tr td {
+            border-right: 1px solid #000;
+            border-left: 1px solid #000;
+            padding:5px;
+        }
+.a-link-block a{
+    display:block;
+    padding-bottom:20px;
+}
+#imgLoader{
+    display:none;
+}
+
+#copy_to_clipboard {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+    /*display: none;*/
+}
+
+#show_error {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.english-font {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+/* Tooltip */
+.test + .tooltip > .tooltip-inner {
+    background-color: #ffc800;
+    color: #000;
+    border: 1px solid black;
+    padding: 15px;
+    font-size: 16px;
+}
+/* Tooltip on top */
+.test + .tooltip.top > .tooltip-arrow {
+    border-top: 5px solid black;
+}
+
+.path-control-width {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 960px;
+}
+
+.my-glyph {
+    font-size: 35px;
+    color: #ffcc00;
+}

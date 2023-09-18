@@ -1,0 +1,112 @@
+﻿@using Microsoft.AspNet.Identity
+
+@if (User.Identity.IsAuthenticated) {
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            مدیریت
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a target="_blank" href="/Default/Index">مدیریت</a></li>
+            <li><a target="_blank" href="/">صفحه اصلی</a></li>
+            <li><a target="_blank" href="/MessageManager/Index/1">پیام ها</a></li>
+            <li><a target="_blank" href="/CommentManager/Search">جستجوی نظرات</a></li>
+            <li><a target="_blank" href="#">نظرات جدید</a></li>
+            <li><a target="_blank" href="/Uploader/Index">مدیریت فایل</a></li>
+            <li><a target="_blank" href="/Uploader/Uploader">آپلودر</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            اپلیکیشن
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a target="_blank" href="/AppManager/Index">لیست</a></li>
+            <li><a target="_blank" href="/AppManager/Create">افزودن</a></li>
+            <li><a target="_blank" href="/AppManager/Search">جستجو</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            خصوصیات
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a target="_blank" href="/FeatureManager/Index">لیست</a></li>
+            <li><a target="_blank" href="/FeatureManager/Create">افزودن</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            اخبار
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a target="_blank" href="/NewsManager/Index">لیست</a></li>
+            <li><a target="_blank" href="/NewsManager/Create">افزودن</a></li>
+            <li><a target="_blank" href="/NewsManager/Search">جستجو</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            نمونه سوالات استخدامی
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a target="_blank" href="/QuestionManager/Index">لیست</a></li>
+            <li><a target="_blank" href="/QuestionManager/Create">افزودن</a></li>
+            <li><a target="_blank" href="/QuestionManager/Search">جستجو</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            لیست دانلودکنندگان سوالات
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a target="_blank" href="/CustomerManager/Index">لیست همه کاربران</a></li>
+            <li><a target="_blank" href="/CustomerManager/EPTList">لیست دانلود کنندگان EPT</a></li>
+            <li><a target="_blank" href="/CustomerManager/OtherList">لیست دانلود کنندگان غیر EPT</a></li>
+            <li><a target="_blank" href="/CustomerManager/Search">جستجو</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            EPT
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a target="_blank" href="/EPTManager/Index">نرم افزار EPT</a></li>
+            <li><a target="_blank" href="/EPTManager/Create">افزودن EPT</a></li>
+            <li><a target="_blank" href="/EPTManager/QList">لیست سوالات EPT</a></li>
+            <li><a target="_blank" href="/EPTManager/QCreate">افزودن سوال EPT</a></li>
+            <li><a target="_blank" href="/EPTManager/Search">جستجو</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            حساب کاربری
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            @if (User.IsInRole("FullAdministrator")) {
+                <li>@Html.ActionLink("افزودن مدیر", "Register", "Account")</li>
+            }
+            <li>@Html.ActionLink("تغییر رمز عبور", "ChangePassword", "Manage")</li>
+            <li>
+                <button id="LogOff_LINK" class="btn btn-danger navbar-btn">خروج</button>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "LogOff_FORM" })) {
+                    @Html.AntiForgeryToken()
+                }
+            </li>
+        </ul>
+    </li>
+}

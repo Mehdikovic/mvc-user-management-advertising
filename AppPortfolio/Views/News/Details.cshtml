@@ -1,0 +1,174 @@
+﻿@using AppPortfolio.Controllers;
+@using AppPortfolio.Models.DataModels.ViewModels;
+
+@model AppPortfolio.Models.DataModels.ViewModels.NewsCommentViewModel
+@{
+    ViewBag.Title = "خبر استخدامی، مشاهده اخبار، اخبار استخدامی";
+    string tagsResult = Utility.GetTags(Model.News.Tags);
+}   
+
+@section metaTags{
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، دانلود نمونه سوالات و نرم افزار استخدامی، مشاهده آخرین اخبار">
+    <meta name="keywords" content="@tagsResult">
+    <link rel="canonical" href="/News/Details/@Model.News.ID" />
+}
+<div class="mb-200"></div>
+
+<div class="page-content">
+    <div class="container mb-100">
+
+        <div class="row">
+            <!-- Post Content Column -->
+            <div class="col-md-12">
+
+                <!-- Title -->
+                <h1 class="mt-4">@Model.News.Name</h1>
+
+                <hr>
+
+                <!-- Date/Time -->
+                <p>تاریخ درج: @Model.News.Date</p>
+
+                <div>
+                    <img style="width:700px;height:300px" src="@Model.News.Imagepath" alt="@Model.News.Name" title="@Model.News.Name" />
+                </div>
+
+                <hr>
+                <div class="text-justify">
+                    @Html.Raw(Model.News.Text)
+                </div>
+            </div>
+
+            <!-- Sidebar Widgets Column -->
+        </div>
+        <hr />
+        <div class="row">
+            <h4 class="alert alert-success text-center">نظرات</h4>
+            <h6>نظرات تایید شده: <span>@Model.ValidCommentCount</span></h6>
+            <h6>نظرات پاسخ داده شده: <span>@Model.ResponseCommentCount</span></h6>
+            <h6>نظرات در انتظار تایید: <span>@Model.InValidCommentCount</span></h6>
+            <div class="col-md-10 text-justify blog-posts post-single">
+			<hr />
+                <div class="post-comments">
+                    <ul class="media-list comments-li">
+                        @foreach (var comment in Model.Comments) {
+                            if (comment.ParentComment.IsValid) {
+                                <li class="media comment">
+                                    <div class="media-right">
+                                        <a href="#" title="نظرات اخبار استخدامی" id="comment#@comment.ParentComment.ID" class="avatar">
+                                            <img src="~/wwwroot/img/news/avatar.png" class="media-object img-responsive img-circle" alt="@comment.ParentComment.Name" />
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6 class="media-heading author">
+                                            @comment.ParentComment.Name
+                                        </h6>
+                                        <p class="date direction-ltr">
+                                            @comment.ParentComment.Date.ToFullPersianDate().ToLongDateTime()
+                                        </p>
+                                        <p>@comment.ParentComment.Text</p>
+                                        @if (User.Identity.IsAuthenticated) {
+                                            <a class="comment-reply-link" href="/News/Respond?newsID=@Model.News.ID&parentID=@comment.ParentComment.ID">
+                                                <i class="fa fa-repeat"></i>پاسخ
+                                            </a>
+                                        }
+                                        @foreach (var childComment in comment.ChildComments) {
+                                            <div class="media comment child alert alert-info">
+                                                <div class="media-right">
+                                                    <a href="#" title="نظرات اخبار استخدامی" id="comment#@childComment.ID" class="avatar">
+                                                        <img src="~/wwwroot/img/news/avatar.png" class="media-object img-responsive img-circle" alt="Admin" />
+                                                    </a>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading author">ادمین سایت</h6>
+                                                    <p class="date direction-ltr">
+                                                        @childComment.Date.ToFullPersianDate().ToLongDateTime()
+                                                    </p>
+                                                    <p>@childComment.Text</p>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </li>
+                            } else if (!comment.ParentComment.IsValid && User.Identity.IsAuthenticated) {
+                                <li class="media comment">
+                                    <div class="media-right">
+                                        <a href="#" id="comment#@comment.ParentComment.ID" class="avatar">
+                                            <img src="~/wwwroot/img/news/avatar.png" class="media-object img-responsive img-circle" alt="@comment.ParentComment.Name" />
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6 class="media-heading author">
+                                            @comment.ParentComment.Name
+                                        </h6>
+                                        <p class="date">
+                                            @comment.ParentComment.Date.ToFullPersianDate().ToLongDateTime()
+                                        </p>
+                                        <p>@comment.ParentComment.Text</p>
+                                        <a class="comment-reply-link" href="/News/Respond?newsID=@Model.News.ID&parentID=@comment.ParentComment.ID">
+                                            <i class="fa fa-repeat"></i>پاسخ
+                                        </a>
+                                        @Html.ActionLink("تایید", "ValidateComment", "News", new { newsID = Model.News.ID, commentID = comment.ParentComment.ID }, new { @class = "btn btn-danger" })
+                                        @foreach (var childComment in comment.ChildComments) {
+                                            <div class="media comment child">
+                                                <div class="media-right">
+                                                    <a href="#" title="نظرات اخبار استخدامی" id="comment#@childComment.ID" class="avatar">
+                                                        <img src="img/news/avatar-01.png" class="media-object img-responsive img-circle" alt="Admin" />
+                                                    </a>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading author">ادمین سایت</h6>
+                                                    <p class="date">
+                                                        @childComment.Date.ToFullPersianDate().ToLongDateTime()
+                                                    </p>
+                                                    <p>@childComment.Text</p>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ul><!-- .comments-li end -->
+                </div><!-- .post-comments end -->
+                <!--ترجمه شده توسط مرجع تخصصی برنامه نویسان-->
+                <!-- .comment-form start -->
+                <div class="comment-form">
+                    <div id="respond">
+                        @using (Html.BeginForm("AddComment", "News", FormMethod.Post)) {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" value="@Model.News.ID" name="newsID" />
+                            <div class="form-group">
+                                <label>
+                                    <span class="required">*</span> نام:
+                                </label>
+                                @Html.EditorFor(model => model.Comment.Name, new { htmlAttributes = new { @class = "wpcf7-text form-control" } })
+                                @Html.ValidationMessageFor(model => model.Comment.Name, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <span class="required">*</span>آدرس ایمیل
+                                </label>
+                                @Html.EditorFor(model => model.Comment.Email, new { htmlAttributes = new { @class = "wpcf7-text form-control direction-ltr" } })
+                                @Html.ValidationMessageFor(model => model.Comment.Email, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group wpcf7-message">
+                                <label>
+                                    نظر
+                                </label>
+                                @Html.TextAreaFor(model => model.Comment.Text, new { @class = "wpcf7-text form-control", rows = 10, cols = 10 })
+                                @Html.ValidationMessageFor(model => model.Comment.Text, "", new { @class = "text-danger" })
+                            </div>
+                            <input type="submit" class="wpcf7-submit btn btn-primary float-left comment-reply" value="ارسال" />
+                        }
+                    </div><!-- #respond end -->
+                </div>
+                <!-- .comment-form end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,9 @@
+﻿@model string
+@{
+    ViewBag.Title = "خطا";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h3 class="text-center text-danger">خطایی هنگام عملیات رخ داده است | لطفا بعداً امتحان کنید | در صورت تکرار مجدد به پشتیبانی اطلاع دهید</h3>
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-block btn-primary" })
+<a href="@Model" class="btn btn-block btn-warning">بازگشت به لیست</a>

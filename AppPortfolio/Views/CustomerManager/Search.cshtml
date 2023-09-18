@@ -1,0 +1,92 @@
+﻿@using AppPortfolio.Controllers;
+
+@model AppPortfolio.Models.DataModels.ViewModels.SearchViewModels.CustomerSearchViewModel
+
+@{
+    ViewBag.Title = "جستجوی متقاضی";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2>جستجوی متقاضی</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>متقاضی</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Customer.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Customer.Email, new { htmlAttributes = new { @class = "form-control direction-ltr" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Customer.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Customer.Phone, new { htmlAttributes = new { @class = "form-control direction-ltr phone-number-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="جستجو" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}
+<hr />
+<h2>نتیجه</h2>
+@if (Model != null && Model.Customers != null) {
+    <table class="table table-hover">
+        <tr>
+            <th>
+                ایمیل
+            </th>
+            <th>
+                شماره موبایل
+            </th>
+            <th>
+                تاریخ ثبت نام
+            </th>
+            <th>
+                تعداد سوالات دانلود شده
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Customers) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td class="direction-ltr">
+                    @item.DateOfRegister.ToFullPersianDate().ToLongDateTime()
+                </td>
+                <td width="150px;">
+                    @item.Customer_Question.Count()
+                </td>
+                <td width="100px;">
+                    @Html.ActionLink("لیست سوالات دانلود شده", "Details", new { id = item.ID, page = 1 }, new { @class = "btn btn-info" })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+<hr />
+@section Scripts {
+    <script src="~/wwwroot/js/jquery.maskedinput.min.js"></script>
+    <script>
+        $(function () {
+            $.mask.definitions['1'] = "[0123456789]";
+            $.mask.definitions['9'] = '';
+            $(".phone-number-control").mask("0911-111-1111", { placeholder: "*" });
+        })();
+    </script>
+}

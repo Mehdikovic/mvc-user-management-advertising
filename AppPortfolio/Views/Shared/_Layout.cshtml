@@ -1,0 +1,193 @@
+﻿﻿<!DOCTYPE html>
+
+<html lang="fa">
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="Fariborz Ahmadi">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @RenderSection("metaTags", required: false)
+    <title>سنجش استخدام | @ViewBag.Title</title>
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">
+	<style type="text/css">
+		.no-js #loader { display: none;  }
+		.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+		.se-pre-con {
+			position: fixed;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			z-index: 9999;
+			background: url(/wwwroot/img/loader3.gif) center no-repeat #fff;
+		}
+	</style>
+</head>
+
+<body style="overflow-x:hidden">
+	<div class="se-pre-con"></div>
+	 @Styles.Render("~/Styles/css")
+    <link href="~/wwwroot/css/style.css" rel="stylesheet" type="text/css" />
+    @RenderSection("styles", required: false)
+    <div class="header-wrapper header-transparent">
+        <header id="header">
+            <div id="top-bar-wrapper" class="dark clearfix">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <nav class="navbar navbar-default nav-right" role="navigation">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                                        <span class="sr-only">تعویض ناوبری</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                </div>
+                                <div class="collapse navbar-collapse" id="navbar-collapse">
+                                    @Html.Partial("_Navbar")
+                                    <div id="search">
+                                        <form action="/Home/Search" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <input class="search-submit" type="submit" />
+                                            <input id="m_search" name="q" type="text" placeholder="جستجو ..." />
+                                        </form>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+
+    @RenderBody()
+
+    <div id="footer-wrapper">
+        <footer id="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="footer-info">
+                            <span class="icon-container">
+                                <img src="~/wwwroot/img/svg/email.svg" class="img-responsive" alt="email icon" />
+                            </span>
+                            <a href="/Home/Contact" title="ایمیل"><strong>ایمیل: </strong> info@email.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <div id="copyleft-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <p>کلیه حقوق قالب سایت برای مجموعه برنامه نویسان محفوظ می باشد</p>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <ul class="breadcrumb">
+                        <li><a title="صفحه اصلی" href="/">صفحه اصلی</a></li>
+                        <li><a title="درباره ما" href="/Home/About">درباره ما</a></li>
+                        <li><a title="ارتباط" href="/Home/Contact">ارتباط</a></li>
+                        <li><a title="اپلیکیشن ها" href="/App/List">اپلیکیشن ها</a></li>
+                        <li><a title="اخبار" href="/News/List">اخبار</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="scroll-up">
+            <span class="icon-container">
+                <img src="~/wwwroot/img/svg/arrowup.svg" class="img-responsive" alt="arrow icon" />
+            </span>
+        </a>
+
+    </div>
+
+    @Scripts.Render("~/bundles/mainJS")
+	
+    <script type="text/javascript" async>
+        jQuery(document).ready(function ($) {
+			jQuery(".se-pre-con").fadeOut("slow");
+            'use strict';
+            jQuery('#rev-slider').revolution(
+                {
+                    dottedOverlay: "none",
+                    delay: 9000,
+                    startwidth: 1170,
+                    startheight: 700,
+                    hideThumbs: 200,
+                    thumbWidth: 100,
+                    thumbHeight: 50,
+                    thumbAmount: 3,
+                    navigationType: "none",
+                    navigationArrows: "solo",
+                    navigationStyle: "preview5",
+                    touchenabled: "on",
+                    onHoverStop: "off",
+                    swipe_velocity: 0.7,
+                    swipe_min_touches: 1,
+                    swipe_max_touches: 1,
+                    drag_block_vertical: false,
+                    keyboardNavigation: "on",
+                    navigationHAlign: "center",
+                    navigationVAlign: "bottom",
+                    navigationHOffset: 0,
+                    navigationVOffset: 20,
+                    soloArrowRightHalign: "right",
+                    soloArrowRightValign: "center",
+                    soloArrowRightHOffset: 20,
+                    soloArrowRightVOffset: 0,
+                    soloArrowLeftHalign: "left",
+                    soloArrowLeftValign: "center",
+                    soloArrowLeftHOffset: 20,
+                    soloArrowLeftVOffset: 0,
+                    shadow: 0,
+                    fullWidth: "on",
+                    fullScreen: "off",
+                    spinner: "spinner0",
+                    stopLoop: "off",
+                    stopAfterLoops: -1,
+                    stopAtSlide: -1,
+                    shuffle: "off",
+                    forceFullWidth: "off",
+                    fullScreenAlignForce: "off",
+                    minFullScreenHeight: "400",
+                    hideThumbsOnMobile: "off",
+                    hideNavDelayOnMobile: 1500,
+                    hideBulletsOnMobile: "off",
+                    hideArrowsOnMobile: "off",
+                    hideThumbsUnderResolution: 0,
+                    hideSliderAtLimit: 0,
+                    hideCaptionAtLimit: 0,
+                    hideAllCaptionAtLilmit: 0,
+                    startWithSlide: 0,
+                    hideTimerBar: "on"
+                });
+
+            // GALLERY CAROUSEL
+            $('#gallery-carousel').owlCarousel({
+                items: 5, //5 items above 1000px browser width
+                itemsCustom: [[0, 1], [600, 2], [1000, 4], [1300, 5]],
+                autoPlay: true,
+                pagination: false,
+                navigation: true
+            });
+
+            // TESTIMONIAL CAROUSEL START
+            $('#testimonial-carousel').owlCarousel({
+                items: 2, //2 items above 1000px browser width
+                itemsCustom: [[0, 1], [600, 2], [1000, 2]],
+                autoPlay: true,
+                pagination: false,
+                navigation: true
+            });
+
+        });
+            /* ]]> */
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

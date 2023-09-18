@@ -1,0 +1,65 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@using AppPortfolio.Controllers
+
+@model IPagedList<AppPortfolio.Models.Customer>
+
+@{
+    ViewBag.Title = "لیست دانلود کنندگان";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-hover">
+    <tr>
+        <th>
+            ایمیل
+        </th>
+        <th>
+            شماره موبایل
+        </th>
+        <th>
+            تاریخ ثبت نام
+        </th>
+        <th>
+            تعداد سوالات دانلود شده
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td class="direction-ltr">
+               @item.DateOfRegister.ToFullPersianDate().ToLongDateTime()
+            </td>
+            <td width="150px;">
+                @item.Customer_Question.Count()
+            </td>
+            <td width="100px;">
+                @Html.ActionLink("لیست سوالات دانلود شده", "Details", new { id = item.ID, page = 1 }, new { @class = "btn btn-info" })
+            </td>
+        </tr>
+    }
+
+</table>
+<hr />
+<div class="row direction-ltr text-center">
+    @Html.PagedListPager(Model,
+    page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions {
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        LinkToFirstPageFormat = "<< اولین",
+        LinkToPreviousPageFormat = "< قبلی",
+        LinkToNextPageFormat = "بعدی >",
+        LinkToLastPageFormat = "آخرین >>"
+    })
+</div>
+<hr />

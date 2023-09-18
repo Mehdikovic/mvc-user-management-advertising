@@ -1,0 +1,31 @@
+﻿@model IEnumerable<AppPortfolio.Models.PathLog>
+
+@{
+    ViewBag.Title = "لیست فایل های استفاده نشده";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2>لیست فایل های استفاده نشده</h2>
+
+<table class="table">
+    <tr>
+        <th>
+           فایل
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td class="direction-ltr">
+                <a href="@item.Path" class="btn btn-success">فایل</a>
+            </td>
+            <td>
+                @Html.ActionLink("حذف فایل", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<p>@Html.ActionLink("حذف همه", "DeleteAll", "Uploader", null, new { @class = "btn btn-danger btn-block" })</p>

@@ -1,0 +1,51 @@
+﻿<ul class="nav navbar-nav">
+
+    <li class="@if (Request.Path == "/") { this.WriteLiteral("current-menu-item"); } ">
+        <a title="صفحه اصلی" href="/">صفحه اصلی</a>
+    </li>
+
+    <li class="@if (Request.Path.StartsWith("/News/")) { this.WriteLiteral("current-menu-item"); } ">
+        <a title="اخبار استخدامی" href="/News/List">اخبار استخدامی</a>
+    </li>
+
+    <li class="@if (Request.Path.StartsWith("/App/List")) { this.WriteLiteral("current-menu-item"); } ">
+        <a title="اپلیکیشن های اسخدامی" href="/App/List">اپلیکیشن های استخدامی</a>
+    </li>
+
+    <li class="@if (Request.Path.StartsWith("/Question/")) { this.WriteLiteral("current-menu-item"); } ">
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button" aria-haspopup="false" aria-expanded="true">نمونه سوال استخدامی</a>
+        <ul class="dropdown-menu">
+            <li class="text-right"><a title="نمونه سوالات سال های پیشین" href="/Question/List/0">سوالات استخدامی سال های قبل</a></li>
+            <li class="text-right"><a title="نمونه سوالات" href="/Question/List/1">نمونه سوالات استخدامی</a></li>
+        </ul><!-- .dropdown-menu end -->
+    </li>
+
+    <li class="@if (Request.Path.StartsWith("/EPT/")) { this.WriteLiteral("current-menu-item"); } ">
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button" aria-haspopup="false" aria-expanded="true">EPT</a>
+        <ul class="dropdown-menu">
+            <li class="text-right"><a title="دانلود نرم افزار EPT" href="/EPT/App">دانلود نرم افزار EPT</a></li>
+            <li class="text-right"><a title="دانلود نمونه سوالات EPT" href="/EPT/Questions">دانلود نمونه سوالات EPT</a></li>
+        </ul><!-- .dropdown-menu end -->
+    </li><!-- .dropdown end -->
+
+    <li class="@if (Request.Path.StartsWith("/Home/Contact")) { this.WriteLiteral("current-menu-item"); } ">
+        <a title="تماس با ما" href="/Home/Contact">تماس با ما</a>
+    </li>
+
+    <li class="@if (Request.Path.StartsWith("/Home/About")) { this.WriteLiteral("current-menu-item"); } ">
+        <a href="#" data-toggle="dropdown" class="dropdown-toggle" role="button" aria-haspopup="false" aria-expanded="true">تلگرام</a>
+        <ul class="dropdown-menu">
+            <li class="text-right"><a target="_blank" title="کانال تلگرام سنجش استخدام" href="https://t.me/Sanjeshestekhdan">کانال تلگرام سنجش استخدام</a></li>
+            <li class="text-right"><a target="_blank" title="کانال تلگرام EPT اکسپتنس" href="https://t.me/EPT_Acceptance">کانال تلگرام EPT اکسپتنس</a></li>
+            <!-- <li class="text-right"><a title="درباره ما" href="/Home/About">درباره ما</a></li> -->
+        </ul><!-- .dropdown-menu end -->
+    </li><!-- .dropdown end -->
+
+    @{
+        if (Request.Cookies.Get("__customer_identifier") != null) {
+            <li>
+                <a title="خروج" href="/User/Customer/Logoff">خروج</a>
+            </li>
+        }
+    }
+</ul><!-- .nav.navbar-nav end -->

@@ -1,0 +1,75 @@
+﻿@using AppPortfolio.Controllers;
+
+@model AppPortfolio.Models.DataModels.ViewModels.AIOViewModel
+
+@{ 
+    ViewBag.Title = "جستجوی اخبار و مطالب، نظرات خبرها، اپلیکیشن استخدامی";
+}
+@section metaTags{
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، جستجوی دانلود نمونه سوالات و نرم افزار استخدامی، جستجو و مشاهده آخرین اخبار">
+    <meta name="keywords" content="اخبار استخدامی،نرم افزار های استخدامی، سنجش استخدامی،استخدام،نمونه سوالات استخدامی، نمونه سوال،EPT،آخرین اخبار استخدامی">
+    <link rel="canonical" href="/Home/Search" />
+}
+
+<div style="margin-bottom:200px"></div>
+
+<div class="page-content">
+    <div class="container">
+        <!-- .row start -->
+        <div class="row">
+            <h1 class="alert alert-warning text-center">جستجوی مطالب استخدامی</h1>
+            <hr />
+            <h3><span>متن جستجو: </span>@ViewBag.Query</h3>
+            <hr />
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <h4 class="alert alert-success">لیست اپلیکیشن استخدامی</h4>
+                <ul class="list-group">
+                    @foreach (var item in Model.Apps) {
+                        <li class="list-group-item"><a title="@item.Name" href="/App/Details/@item.ID">@item.Name</a></li>
+                    }
+                </ul>
+            </div><!-- .col-md-6 end -->
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <h4 class="alert alert-success">لیست اخبار استخدامی</h4>
+                <ul class="list-group">
+                    @foreach (var item in Model.News) {
+                        <li class="list-group-item">
+                            <a href="/News/Details/@item.ID" title="@item.Name">@item.Name</a>
+                            <p class="direction-ltr text-danger">@item.Date</p>
+                        </li>
+                    }
+                </ul>
+            </div><!-- .col-md-6 end -->
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <h4 class="alert alert-success">لیست نظرات استخدامی</h4>
+                <ul class="list-group">
+                    @foreach (var item in Model.Comments) {
+                        <li class="list-group-item">
+                            <h6>خبر: </h6>
+                            <a class="text-danger" title="اخبار استخدامی" href="/News/Details/@item.NewsID">[خبر مربوطه]</a>
+                            <h6>نظر: </h6>
+                            <a title="نظرات خبر استخدامی" href="/News/Details/@item.NewsID#comment#@item.ID">@item.Text</a>
+                            <p class="direction-ltr text-danger">@item.Date.ToFullPersianDate().ToLongDateTime()</p>
+                        </li>
+                    }
+                </ul>
+            </div><!-- .col-md-6 end -->
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <h4 class="alert alert-success">لیست سوالات استخدامی</h4>
+                <ul class="list-group">
+                    @foreach (var item in Model.Questions) {
+                        <li class="list-group-item">
+                            <a title="سوالات استخدامی" href="/Question/Details/@item.ID">@item.Name</a>
+                            <h6>تاریخ: </h6>
+                            <p class="direction-ltr text-danger">@item.CreatedDate.ToFullPersianDate().ToLongDateTime()</p>
+                        </li>
+                    }
+                </ul>
+            </div><!-- .col-md-6 end -->
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,80 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@using AppPortfolio.Controllers
+
+@model IPagedList<AppPortfolio.Models.HiringNews>
+@{
+    ViewBag.Title = "لیست اخبار";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2 class="text-center text-success">لیست اخبار</h2>
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right" })
+@Html.ActionLink("افزودن خبر", "Create", null, new { @class = "btn btn-danger float-left" })
+<div class="clearfix"></div>
+<hr />
+
+<table class="table">
+    <tr>
+        <th>
+           تیتر خبر
+        </th>
+        <th>
+            تاریخ درج
+        </th>
+        <th>
+            تعداد نظرات
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @item.Name
+        </td>
+        <td>
+            @item.Date
+        </td>
+        <td>
+            @item.Comments.Count()
+        </td>
+        <td>
+            @Html.ActionLink("بروزرسانی", "Edit", new { id=item.ID }, new { @class = "btn btn-warning" }) |
+            @Html.ActionLink("جزئیات", "Details", new { id=item.ID }, new { @class = "btn btn-success" }) |
+            @Html.ActionLink("حذف", "Delete", new { id = item.ID }, new { @class = "confirm-on-delete btn btn-danger" }) |
+            @Html.ActionLink("نظرات", "Index", "CommentManager", new { newsID = item.ID }, new { @class = "btn btn-default" })
+        </td>
+    </tr>
+}
+
+</table>
+
+<hr />
+
+<div class="row direction-ltr text-center">
+    @Html.PagedListPager(Model,
+    page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions
+    {
+        DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+        DisplayLinkToLastPage = PagedListDisplayMode.Always,
+        LinkToFirstPageFormat = "<< اولین",
+        LinkToPreviousPageFormat = "< قبلی",
+        LinkToNextPageFormat = "بعدی >",
+        LinkToLastPageFormat = "آخرین >>"
+    })
+</div>
+<hr />
+@section scripts {
+    <script src="~/wwwroot/Manage/js/confirm-bootstrap.js"></script>
+    <script>
+        $('.confirm-on-delete').confirmModal({
+            confirmTitle: 'تایید',
+            confirmMessage: 'آیا مطمئنید؟',
+            confirmOk: 'بله',
+            confirmCancel: 'خیر',
+            confirmDirection: 'rtl',
+        });
+    </script>
+}

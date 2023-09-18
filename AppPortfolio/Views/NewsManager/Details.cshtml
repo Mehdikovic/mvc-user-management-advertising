@@ -1,0 +1,68 @@
+﻿@model AppPortfolio.Models.HiringNews
+
+@{
+    ViewBag.Title = "جزئیات";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+}
+
+<h2>جزئیات خبر</h2>
+<hr />
+@Html.ActionLink("مدیریت", "Index", "Default", null, new { @class = "btn btn-primary float-right", target = "_blank" })
+@Html.ActionLink("لیست اخبار", "Index", "NewsManager", null, new { @class = "btn btn-danger float-left" })
+<div class="clearfix"></div>
+<hr />
+
+<div class="row">
+    <div class="col-md-2">
+
+        <!-- Search Widget -->
+        <div class="card my-4">
+            <div class="card-body">
+                @Html.ActionLink("Update", "Edit", new { id = Model.ID }, new { @class = "btn btn-warning" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = Model.ID }, new { @class = "btn btn-danger confirm-on-delete" })
+            </div>
+        </div>
+    </div>
+    <!-- Post Content Column -->
+    <div class="col-md-10">
+
+        <!-- Title -->
+        <h1 class="mt-4">@Model.Name</h1>
+
+        <hr>
+
+        <!-- Date/Time -->
+        <p>تاریخ درج: @Model.Date</p>
+
+        <div>
+            <img style="width:700px;height:300px" src="@Model.Imagepath" alt="@Model.Name" title="@Model.Name" />
+        </div>
+
+        <hr>
+
+        @Html.Raw(Model.Text)
+
+    </div>
+
+    <!-- Sidebar Widgets Column -->
+</div>
+<div class="row">
+    <h1>لیست تگ ها</h1>
+    @foreach (var tag in Model.Tags.Split(',')) {
+        <h6>@tag</h6>
+    }
+</div>
+<!-- /.row -->
+<hr />
+@section scripts {
+    <script src="~/wwwroot/Manage/js/confirm-bootstrap.js"></script>
+    <script>
+        $('.confirm-on-delete').confirmModal({
+            confirmTitle: 'تایید',
+            confirmMessage: 'آیا مطمئنید؟',
+            confirmOk: 'بله',
+            confirmCancel: 'خیر',
+            confirmDirection: 'rtl',
+        });
+    </script>
+}

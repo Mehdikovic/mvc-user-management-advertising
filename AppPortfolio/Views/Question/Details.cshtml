@@ -1,0 +1,56 @@
+﻿@using AppPortfolio.Controllers;
+@model AppPortfolio.Models.Question
+
+@{
+    ViewBag.Title = "سوالات استخدامی، دانلود نمونه سوالات استخدامی سال های پیشین و جاری";
+    string tagsResult = Utility.GetTags(Model.Tags);
+}
+
+@section metaTags{
+    <meta name="description" content="اطلاع از آخرین اخبار و نمونه سوالات استخدامی و نرم افزار های استخدامی، دانلود نمونه سوالات و نرم افزار استخدامی، مشاهده آخرین اخبار">
+    <meta name="keywords" content="@tagsResult">
+    <link rel="canonical" href="/Question/Details/@Model.ID" />
+}
+
+<div class="mb-200"></div>
+<div class="page-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <a class="text-danger" href="/Question/Details/@Model.ID" title="دانلود @Model.Name">
+                    <h1 class="alert alert-info text-center">دانلود @Model.Name</h1>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <p class="alert alert-info">@Model.Name</p>
+            <hr />
+            <div class="col-md-12">
+                @Html.Raw(Model.Description)
+            </div>
+        </div>
+        <hr />
+        <p>
+            <a class="test btn btn-block btn-warning" href="@Model.Filepath" data-toggle="tooltip" data-placement="top" title="@Model.Name">
+                <strong>دانلود</strong>
+            </a>
+        </p>
+        <hr />
+        <h4>تگ ها</h4>
+        <ul class="list-inline">
+            @foreach (var tag in Model.Tags.Split(',')) {
+                <li class="list-group-item"><h6>@tag</h6></li>
+            }
+        </ul>
+    </div>
+</div>
+<hr />
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

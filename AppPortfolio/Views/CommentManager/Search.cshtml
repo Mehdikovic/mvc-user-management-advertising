@@ -1,0 +1,112 @@
+﻿@using AppPortfolio.Controllers
+
+@model AppPortfolio.Models.DataModels.ViewModels.SearchViewModels.CommentSearchViewModel
+
+@{
+    ViewBag.Title = "جستجوی نظرات";
+    Layout = "~/Views/Shared/_Default_Layout.cshtml";
+    string strClassname = "";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>جستجو</h4>
+        <hr />
+
+        <div class="form-group">
+            <label class="control-label col-md-2">نام نظر دهنده</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comment.Name, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">ایمیل نظر دهنده</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comment.Email, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">متن نظر</label>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Comment.Text, new { @class = "form-control", cols = 20, rows = 5 })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">نظر تایید شده</label>
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Comment.IsValid)
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="جستجو" class="btn btn-danger" />
+            </div>
+        </div>
+    </div>
+}
+
+<h2>نتیجه</h2>
+<hr />
+@if (Model != null && Model.Comments != null) {
+<div class="row">
+    @foreach (var item in Model.Comments) {
+        if (item.ParantID != 0) {
+            strClassname = "bg-primary-light";
+        }
+        <div class="col-md-6 col-sm-6 table-bordered @strClassname">
+            <p>
+                <span>تاریخ نظر: </span>
+                <span class="text-danger">@item.Date.ToFullPersianDate().ToLongDateTime()</span>
+            </p>
+            <p>
+                <span>نام ارسال کننده:  </span>
+                <span class="text-success">@item.Name</span>
+            </p>
+            <p>
+                <span>ایمیل ارسال کننده:  </span>
+                <span class="text-danger">@item.Email</span>
+            </p>
+            <p>
+                <span>تایید</span>
+                <span class="alert text-success">@Html.DisplayFor(modelItem => item.IsValid)</span>
+            </p>
+            <h4 class="alert alert-danger"><a href="/News/Details/@item.NewsID">[خبر مربوطه]</a></h4>
+            <p class="alert alert-success">متن: @item.Text</p>
+            @{
+                if (item.ParantID == 0) {
+                    @Html.ActionLink("پاسخ", "Respond", "News", new { newsID = item.NewsID, parentID = item.ID }, new { @class = "btn btn-warning confirm-on-delete", target = "_blank" })
+                    if (!item.IsValid) {
+                        @Html.ActionLink("تایید", "Valid", new { id = item.ID, newsID = item.NewsID }, new { @class = "btn btn-success", target = "_blank" });
+                    } else {
+                        @Html.ActionLink("مسدود", "InValid", new { id = item.ID, newsID = item.NewsID }, new { @class = "btn btn-info", target = "_blank" })
+                    }
+                }
+            }
+            @Html.ActionLink("حذف", "Delete", new { id = item.ID, newsID = item.NewsID }, new { @class = "btn btn-danger confirm-on-delete" })
+        </div>
+                }
+</div>
+                    <hr />
+                    }
+@section scripts {
+    <script src="~/wwwroot/Manage/js/confirm-bootstrap.js"></script>
+    <script>
+        $('.confirm-on-delete').confirmModal({
+            confirmTitle: 'تایید',
+            confirmMessage: 'آیا مطمئنید؟',
+            confirmOk: 'بله',
+            confirmCancel: 'خیر',
+            confirmDirection: 'rtl',
+        });
+    </script>
+}
